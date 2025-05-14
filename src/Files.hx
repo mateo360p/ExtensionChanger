@@ -33,12 +33,12 @@ class Files {
             for (f in arr) if(f.endsWith(pre)) count++;
 
             if (count == 0) { /// Si no hay archivos con esa extension
-                trace('There isnt files with the extension $pre');
+                trace('\nThere isnt files with the extension $pre');
                 Input.continueInput("");
             } else notFiles = false;
         }
 
-		var post:String = Input.msgInput("The new file extension? ", String);
+		var post:String = Input.msgInput("What extension do you want the files to have? ", String);
         if(!post.contains(".")) post = '.$post'; // Añadiendo el punto, si es que no hay
 
         Input.continueInput("Press enter to change the file extensions!");
@@ -53,7 +53,7 @@ class Files {
                     continue;
                 } else if (newPath == "nulla") { // Si no tiene extensión, se le añade!
                     trace('File $file doesnt have an extension, adding it anyways!!!');
-                    newPath += post;
+                    newPath += post; // TO DO: añadir opcion para ajustes? sera posible?
                 }
                 FileSystem.rename(filePath, newPath);
                 trace('Renamed: $file to => $newPath');

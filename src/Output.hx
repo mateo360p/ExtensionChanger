@@ -1,10 +1,12 @@
 class Output {
+    public static var nextEnter:Bool = false;
     /**
      * Muestra una linea en la consola 
      * @param msg La línea de mensaje!
      */
     public static function showMsg(msg:String) {
-        Sys.println(msg);
+        Sys.println((Output.nextEnter ? "\n" : "") + msg);
+        Output.nextEnter = !nextEnter;
     }
 
     /**

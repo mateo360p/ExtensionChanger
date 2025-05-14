@@ -1,10 +1,7 @@
 class Main {
+	static final version:String = "v0.0.2";
 	static function main() {
-		/*
-		var name:String; // This was a test!!!
-		name = Input.msgInput("Ingresa tu nombre!!!", String);
-		Input.continueInput('Hola $name!, presiona cualquier tecla para continuar');
-		*/
+		Input.continueInput('Hi!, welcome to Extension Changer ($version)!\nPress enter to start!');
 
 		if (Files.replacingPaths()) return; // Si falló y se presiona cualquier tecla se acaba el programa
 

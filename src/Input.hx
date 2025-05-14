@@ -26,7 +26,8 @@ class Input {
      * Manda un mensaje, espera al input, y asigna su valor a la `variable`!
      */
     public static function msgInput(msg:String, type:Class<Dynamic>):Dynamic {
-        Output.showMsg(msg + "\n");
+        Output.showMsg(msg);
+        Output.nextEnter = true;
         return getInput(type);
     }
 
@@ -34,6 +35,7 @@ class Input {
      * Manda un mensaje, espera al input, y continua los procesos!
      */
     public static function continueInput(?msg:String = "Press enter to finish") {
+        Output.nextEnter = true;
         Output.addMsg(msg.length > 0 ? '\n$msg' : msg); // Para evitar posibles "bugs" visuales
         input(); // Luego de esto continua el codigo, o si no hay mas se cierra
     }
