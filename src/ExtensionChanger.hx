@@ -2,7 +2,7 @@ import sys.FileSystem;
 
 using StringTools;
 
-class Files {
+class ExtensionChanger {
     /**
      * Lee los archivos y folderes dentro un path dado!
      * @return Si el programa encontro o no el path
@@ -23,20 +23,22 @@ class Files {
         Input.continueInput("Files inside your path: " + arr.toString());
 
         //------------------------------------------ Extensiones ------------------------------------------
-        var notFiles:Bool = true;
         var pre:String = "";
-        while (notFiles) {
-            pre = Input.msgInput("The replaceable file extension? ", String);
-            if(!pre.contains(".")) pre = '.$pre'; // Añadiendo el punto, si es que no hay
+        if (!Prefs._changeAllFiles) { // If CAF, you don't need to put a pre ext
+            var notFiles:Bool = true;
+            while (notFiles) {
+                pre = Input.msgInput("The replaceable file extension? ", String);
+                if(!pre.contains(".")) pre = '.$pre'; // Añadiendo el punto, si es que no hay
 
-            var count:Int = 0;
-            for (f in arr) if(f.endsWith(pre)) count++;
+                var count:Int = 0;
+                for (f in arr) if(f.endsWith(pre)) count++;
 
-            if (count == 0) { /// Si no hay archivos con esa extension
-                trace('\nThere isnt files with the extension $pre');
-                Input.continueInput("");
-            } else notFiles = false;
-        }
+                if (count == 0) { /// Si no hay archivos con esa extension
+                    trace('\nThere isnt files with the extension $pre');
+                    Input.continueInput("");
+                } else notFiles = false;
+            }
+        } else Input.continueInput("Hey!, you have enabled the option to change all files!!!\nAre you sure you want to continue?");
 
 		var post:String = Input.msgInput("What extension do you want the files to have? ", String);
         if(!post.contains(".")) post = '.$post'; // Añadiendo el punto, si es que no hay
@@ -45,34 +47,23 @@ class Files {
 
         //------------------------------------------ Cambiar Extensiones ------------------------------------------
         for (file in FileSystem.readDirectory(folderPath)) {
-            var filePath = folderPath + "/" + file;
-            if (!FileSystem.isDirectory(filePath) && filePath.endsWith(pre)) {
-                var newPath:String = replaceExtension(filePath, post);
+            var filePath =  folderPath + "/" + file;
+            var preDone = Prefs._changeAllFiles ? true : filePath.endsWith(pre);
+
+            if (!FileSystem.isDirectory(filePath) && preDone) {
+                var newPath:String =FileUtil.replaceExtension(filePath, post);
                 if(newPath == null) { // Si por alguna razon esta raro, se salta1!
                     trace('File $file is invalid!!!');
                     continue;
                 } else if (newPath == "nulla") { // Si no tiene extensión, se le añade!
                     trace('File $file doesnt have an extension, adding it anyways!!!');
-                    newPath += post; // TO DO: añadir opcion para ajustes? sera posible?
+                    newPath = filePath + post; // dumbass
                 }
+
                 FileSystem.rename(filePath, newPath);
                 trace('Renamed: $file to => $newPath');
             }
         }
         return false;
-    }
-
-    /**
-     * Cambia la extension de `path`, si es que tiene una, por `newExt`
-     * @return La nueva ruta del archivo!
-     */
-    public static function replaceExtension(path:String, newExt:String):String {
-        if (path == null || path.length < 1) return null;
-
-        var dotPos:Int = path.lastIndexOf("."); // Posicion del punto
-        if (dotPos == -1) return "nulla";
-
-        var noExtString:String = path.substr(0, dotPos); // Obtiene el texto antes del punto
-        return '$noExtString$newExt'; // Final
     }
 }
