@@ -1,8 +1,8 @@
 class Output {
-    public static var nextEnter:Bool = false;
+    public static var nextEnter:Bool = false; // For more fancy messages
     /**
-     * Muestra una linea en la consola 
-     * @param msg La línea de mensaje!
+     * Show a line in the console
+     * @param msg The message line!
      */
     public static function showMsg(msg:String) {
         Sys.println((Output.nextEnter ? "\n" : "") + msg);
@@ -10,8 +10,8 @@ class Output {
     }
 
     /**
-     * Añade un mensaje al lado del anterior
-     * @param msg El mensaje!
+     * Adds a message next to the previous one
+     * @param msg The message!
      */
     public static function addMsg(msg:String) {
         Sys.print(msg);

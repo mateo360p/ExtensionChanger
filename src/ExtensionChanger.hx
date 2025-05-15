@@ -4,15 +4,15 @@ using StringTools;
 
 class ExtensionChanger {
     /**
-     * Lee los archivos y folderes dentro un path dado!
-     * @return Si el programa encontro o no el path
+     * Finds files and folders inside a path!
+     * @return If the code founded it
      */
     public static function replacingPaths():Bool {
         var arr:Array<String> = [];
         var folderPath:String = Input.msgInput("Insert your path: ", String);
 
-        //------------------------------------------ Hallar la ruta ------------------------------------------
-        if (!FileSystem.exists(folderPath) || !FileSystem.isDirectory(folderPath)) { /// Si no se haya la carpeta
+        //------------------------------------------ Find the folder from path ------------------------------------------
+        if (!FileSystem.exists(folderPath) || !FileSystem.isDirectory(folderPath)) { // If the folder wasn't founded
             trace("Invalid path!!!, does the folder exist?");
             Input.continueInput();
             return true;
@@ -22,18 +22,17 @@ class ExtensionChanger {
         for (file in FileSystem.readDirectory(folderPath)) arr.push(file); 
         Input.continueInput("Files inside your path: " + arr.toString());
 
-        //------------------------------------------ Extensiones ------------------------------------------
+        //------------------------------------------ Extensions ------------------------------------------
         var pre:String = "";
         if (!Prefs._changeAllFiles) { // If CAF, you don't need to put a pre ext
             var notFiles:Bool = true;
             while (notFiles) {
                 pre = Input.msgInput("The replaceable file extension? ", String);
-                if(!pre.contains(".")) pre = '.$pre'; // Añadiendo el punto, si es que no hay
-
+                if(!pre.contains(".")) pre = '.$pre'; // Adding the dot, if it isn't one
                 var count:Int = 0;
                 for (f in arr) if(f.endsWith(pre)) count++;
 
-                if (count == 0) { /// Si no hay archivos con esa extension
+                if (count == 0) { // If there aren't any files with that extension
                     trace('\nThere isnt files with the extension $pre');
                     Input.continueInput("");
                 } else notFiles = false;
@@ -41,23 +40,23 @@ class ExtensionChanger {
         } else Input.continueInput("Hey!, you have enabled the option to change all files!!!\nAre you sure you want to continue?");
 
 		var post:String = Input.msgInput("What extension do you want the files to have? ", String);
-        if(!post.contains(".")) post = '.$post'; // Añadiendo el punto, si es que no hay
+        if(!post.contains(".")) post = '.$post'; // Again, adding the dot, if it isn't one
 
         Input.continueInput("Press enter to change the file extensions!");
 
-        //------------------------------------------ Cambiar Extensiones ------------------------------------------
+        //------------------------------------------ Changing extensions ------------------------------------------
         for (file in FileSystem.readDirectory(folderPath)) {
             var filePath =  folderPath + "/" + file;
             var preDone = Prefs._changeAllFiles ? true : filePath.endsWith(pre);
 
             if (!FileSystem.isDirectory(filePath) && preDone) {
-                var newPath:String =FileUtil.replaceExtension(filePath, post);
-                if(newPath == null) { // Si por alguna razon esta raro, se salta1!
+                var newPath:String = FileUtil.replaceExtension(filePath, post);
+                if(newPath == null) { // If, for some reason-, the path is null, it just skip it!
                     trace('File $file is invalid!!!');
                     continue;
-                } else if (newPath == "nulla") { // Si no tiene extensión, se le añade!
+                } else if (newPath == "nulla") { // If it hasn't an extension, we add it!
                     trace('File $file doesnt have an extension, adding it anyways!!!');
-                    newPath = filePath + post; // dumbass
+                    newPath = filePath + post;
                 }
 
                 FileSystem.rename(filePath, newPath);

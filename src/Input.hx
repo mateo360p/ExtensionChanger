@@ -6,7 +6,7 @@ class Input {
     }
 
     /**
-     * Lee un input de teclado, y regresa el valor segun la clase `type`
+     * Reads an input from the keyboard, and returns the value according to the class `type`
      */
     public static function getInput(type:Class<Dynamic>):Dynamic {
         var dummy = input();
@@ -16,14 +16,14 @@ class Input {
                 out = Std.parseFloat(dummy);
             case Bool:
                 out = (dummy.trim().toLowerCase() == "true") ? true: false;
-            default: // Para cualquier otro, y para String!;
+            default: // For anything else, like String!
                 out = dummy;
         }
         return out;
     }
 
     /**
-     * Manda un mensaje, espera al input, y asigna su valor a la `variable`!
+     * Sends a message, waits for input, and return the value with type `type`!
      */
     public static function msgInput(msg:String, type:Class<Dynamic>):Dynamic {
         Output.showMsg(msg);
@@ -32,11 +32,11 @@ class Input {
     }
 
     /**
-     * Manda un mensaje, espera al input, y continua los procesos!
+     * Sends a message, waits for input, and continues the processes!
      */
     public static function continueInput(?msg:String = "Press enter to finish") {
         Output.nextEnter = true;
-        Output.addMsg(msg.length > 0 ? '\n$msg' : msg); // Para evitar posibles "bugs" visuales
-        input(); // Luego de esto continua el codigo, o si no hay mas se cierra
+        Output.addMsg(msg.length > 0 ? '\n$msg' : msg);
+        input();
     }
 }

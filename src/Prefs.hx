@@ -9,6 +9,9 @@ class Prefs {
         CAF: false,
     }
 
+    /**
+     * Bruh-, load the preferences
+     */
     public static function loadPrefs() {
         var json = FileUtil.parseJson(prefFile);
         if (json.LSD != null) _loadSubdirectories = json.LSD;
